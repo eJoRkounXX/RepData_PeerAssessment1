@@ -78,6 +78,39 @@ if (window.hljs && document.readyState && document.readyState === "complete") {
 </div>
 <div id="loading-and-preprocessing-the-data" class="section level2">
 <h2>Loading and preprocessing the data</h2>
+<div id="getting-the-file" class="section level3">
+<h3>Getting the file</h3>
+<p>Establish source and destination</p>
+<pre class="r"><code>sourceurl &lt;- &quot;https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2Factivity.zip&quot;
+file &lt;- &quot;activity.csv&quot;</code></pre>
+<p>Fetch the file if it doesn’t already exist in working directory</p>
+<pre class="r"><code>if (!file.exists(file)){
+  tmpfile &lt;- tempfile()
+  download.file(sourceurl,tmpfile,method=&quot;curl&quot;)
+  unzip(tmpfile,file)
+  dateDownloaded &lt;- date()
+  dateDownloaded
+}</code></pre>
+</div>
+<div id="import-the-data" class="section level3">
+<h3>import the data</h3>
+<pre class="r"><code>data &lt;- read.csv(file)
+str(data)</code></pre>
+<pre><code>## 'data.frame':    17568 obs. of  3 variables:
+##  $ steps   : int  NA NA NA NA NA NA NA NA NA NA ...
+##  $ date    : Factor w/ 61 levels &quot;2012-10-01&quot;,&quot;2012-10-02&quot;,..: 1 1 1 1 1 1 1 1 1 1 ...
+##  $ interval: int  0 5 10 15 20 25 30 35 40 45 ...</code></pre>
+</div>
+<div id="clean-the-data" class="section level3">
+<h3>clean the data</h3>
+<p>Without casting, data$date is a ‘factor’. Use as.Date to force to ‘Date’</p>
+<pre class="r"><code>data$date &lt;- as.Date(data$date, format=&quot;%Y-%m-%d&quot;)
+str(data)</code></pre>
+<pre><code>## 'data.frame':    17568 obs. of  3 variables:
+##  $ steps   : int  NA NA NA NA NA NA NA NA NA NA ...
+##  $ date    : Date, format: &quot;2012-10-01&quot; &quot;2012-10-01&quot; ...
+##  $ interval: int  0 5 10 15 20 25 30 35 40 45 ...</code></pre>
+</div>
 </div>
 <div id="what-is-mean-total-number-of-steps-taken-per-day" class="section level2">
 <h2>What is mean total number of steps taken per day?</h2>

@@ -54,9 +54,33 @@ dataset.
 
 
 ## Loading and preprocessing the data
-
-
-
+### Getting the file
+Establish source and destination
+```{r echo=TRUE}
+sourceurl <- "https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2Factivity.zip"
+file <- "activity.csv"
+```
+Fetch the file if it doesn't already exist in working directory
+```{r echo=TRUE}
+if (!file.exists(file)){
+  tmpfile <- tempfile()
+  download.file(sourceurl,tmpfile,method="curl")
+  unzip(tmpfile,file)
+  dateDownloaded <- date()
+  dateDownloaded
+}
+```
+### import the data
+```{r echo=TRUE}
+data <- read.csv(file)
+str(data)
+```
+### clean the data
+Without casting, data$date is a 'factor'.  Use as.Date to force to 'Date'
+```{r echo=TRUE}
+data$date <- as.Date(data$date, format="%Y-%m-%d")
+str(data)
+```
 ## What is mean total number of steps taken per day?
 
 
