@@ -95,8 +95,50 @@ str(data)
 ##  $ interval: int  0 5 10 15 20 25 30 35 40 45 ...
 ```
 ## What is mean total number of steps taken per day?
+1. Make a histogram of the total number of steps taken each day
 
+```r
+total_steps <- aggregate( steps ~ date, data, sum, na.rm=TRUE)
+str(total_steps)
+```
 
+```
+## 'data.frame':	53 obs. of  2 variables:
+##  $ date : Date, format: "2012-10-02" "2012-10-03" ...
+##  $ steps: int  126 11352 12116 13294 15420 11015 12811 9900 10304 17382 ...
+```
+
+```r
+hist(
+  total_steps$steps,
+  xlab='Steps per day',
+  main='Histogram of Steps per day')
+```
+
+![](./PA1_template_files/figure-html/unnamed-chunk-5-1.png) 
+
+2. Calculate and report the **mean** and **median** total number of steps taken per day
+
+The mean number of steps per day
+
+```r
+mean_steps <- mean(total_steps$steps)
+mean_steps
+```
+
+```
+## [1] 10766.19
+```
+The median number of steps per day
+
+```r
+median_steps <- median(total_steps$step)
+median_steps
+```
+
+```
+## [1] 10765
+```
 
 ## What is the average daily activity pattern?
 
