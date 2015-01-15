@@ -8,6 +8,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 
+<meta name="author" content="Mark Anderson" />
 
 
 <title>Reproducible Research: Peer Assessment 1</title>
@@ -52,9 +53,29 @@ if (window.hljs && document.readyState && document.readyState === "complete") {
 
 <div id="header">
 <h1 class="title">Reproducible Research: Peer Assessment 1</h1>
+<h4 class="author"><em>Mark Anderson</em></h4>
 </div>
 
 
+<div id="introduction" class="section level2">
+<h2>Introduction <a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a></h2>
+<p>It is now possible to collect a large amount of data about personal movement using activity monitoring devices such as a <a href="http://www.fitbit.com">Fitbit</a>, <a href="http://www.nike.com/us/en_us/c/nikeplus-fuelband">Nike Fuelband</a>, or <a href="https://jawbone.com/up">Jawbone Up</a>. These type of devices are part of the “quantified self” movement – a group of enthusiasts who take measurements about themselves regularly to improve their health, to find patterns in their behavior, or because they are tech geeks. But these data remain under-utilized both because the raw data are hard to obtain and there is a lack of statistical methods and software for processing and interpreting the data.</p>
+<p>This assignment makes use of data from a personal activity monitoring device. This device collects data at 5 minute intervals through out the day. The data consists of two months of data from an anonymous individual collected during the months of October and November, 2012 and include the number of steps taken in 5 minute intervals each day.</p>
+</div>
+<div id="data" class="section level2">
+<h2>Data <a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a></h2>
+<p>The data for this assignment can be downloaded from the course web site:</p>
+<ul>
+<li>Dataset: <a href="https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2Factivity.zip">Activity monitoring data</a> [52K]</li>
+</ul>
+<p>The variables included in this dataset are:</p>
+<ul>
+<li><p><strong>steps</strong>: Number of steps taking in a 5-minute interval (missing values are coded as <code>NA</code>)</p></li>
+<li><p><strong>date</strong>: The date on which the measurement was taken in YYYY-MM-DD format</p></li>
+<li><p><strong>interval</strong>: Identifier for the 5-minute interval in which measurement was taken</p></li>
+</ul>
+<p>The dataset is stored in a comma-separated-value (CSV) file and there are a total of 17,568 observations in this dataset.</p>
+</div>
 <div id="loading-and-preprocessing-the-data" class="section level2">
 <h2>Loading and preprocessing the data</h2>
 </div>
@@ -69,6 +90,13 @@ if (window.hljs && document.readyState && document.readyState === "complete") {
 </div>
 <div id="are-there-differences-in-activity-patterns-between-weekdays-and-weekends" class="section level2">
 <h2>Are there differences in activity patterns between weekdays and weekends?</h2>
+</div>
+<div class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p><a href="https://github.com/rdpeng/RepData_PeerAssessment1">https://github.com/rdpeng/RepData_PeerAssessment1</a><a href="#fnref1">↩</a></p></li>
+<li id="fn2"><p><a href="https://github.com/rdpeng/RepData_PeerAssessment1">https://github.com/rdpeng/RepData_PeerAssessment1</a><a href="#fnref2">↩</a></p></li>
+</ol>
 </div>
 
 
