@@ -142,7 +142,27 @@ median_steps
 
 ## What is the average daily activity pattern?
 
+1. Make a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all days (y-axis)
 
+
+```r
+stepsPerInterval <- aggregate(steps ~ interval, data, FUN = mean, na.rm = TRUE) 
+plot(stepsPerInterval, type = "l", col = "red")
+```
+
+![](./PA1_template_files/figure-html/unnamed-chunk-8-1.png) 
+
+2. Which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps?
+
+
+```r
+maxStepInterval <- stepsPerInterval[which.max(stepsPerInterval$steps), ]$interval
+maxStepInterval
+```
+
+```
+## [1] 835
+```
 
 ## Imputing missing values
 
