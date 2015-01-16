@@ -176,14 +176,101 @@ length(data$steps[is.na(data$steps)])
 ## [1] 2304
 ```
 
+```r
+length(data$interval[is.na(data$interval)])
+```
+
+```
+## [1] 0
+```
+
+```r
+length(data$date[is.na(data$date)])
+```
+
+```
+## [1] 0
+```
+
 
 
 2. Devise a strategy for filling in all of the missing values in the dataset. The strategy does not need to be sophisticated. For example, you could use the mean/median for that day, or the mean for that 5-minute interval, etc.
 
+First determine the median value of each interval, and define a function to return
+that median value on the input of the interval value.
+
+```r
+median_of_interval <- aggregate(data$steps ~ data$interval,data,median)
+lookup_median <- function(ival) { median_of_interval[which(median_of_interval[,1]==ival),2] }
+```
+Next, identify all the indexes of rows with NA as the step value.  Then, replace the
+NA with the median value for that interval.
+
+
 3. Create a new dataset that is equal to the original dataset but with the missing data filled in.
+
+Copy the original data into imp_data,
+Next, identify all the indexes of rows with NA as the step value in the original data.  
+Then, replace theNA with the median value for that interval.
+
+```r
+imp_data <- data
+idx <- which(is.na(data$steps))
+imp_data$steps[idx] <- sapply(idx,function(x) lookup_median(data$interval[x]))
+```
+
 
 4. Make a histogram of the total number of steps taken each day and Calculate and report the mean and median total number of steps taken per day. Do these values differ from the estimates from the first part of the assignment? What is the impact of imputing missing data on the estimates of the total daily number of steps?
 
+
+```r
+imp_total_steps <- aggregate( steps ~ date, data=imp_data, sum)
+hist(
+  imp_total_steps$steps,
+  xlab='Steps per day (Imput values)',
+  main='Histogram of Steps per day')
+```
+
+![](./PA1_template_files/figure-html/unnamed-chunk-13-1.png) 
+
+The mean number of steps per day
+
+```r
+imp_mean_steps <- mean(imp_total_steps$steps)
+imp_mean_steps
+```
+
+```
+## [1] 9503.869
+```
+
+```r
+imp_mean_steps - mean_steps
+```
+
+```
+## [1] -1262.32
+```
+The median number of steps per day
+
+```r
+imp_median_steps <- median(imp_total_steps$step)
+imp_median_steps
+```
+
+```
+## [1] 10395
+```
+
+```r
+imp_median_steps - median_steps
+```
+
+```
+## [1] -370
+```
+
+Most of the NA appear to be in intervals where fewer steps were taken.  So more mass as added to the left side of the histogram.  Both the mean and the median shifted left.
 
 ## Are there differences in activity patterns between weekdays and weekends?
 
