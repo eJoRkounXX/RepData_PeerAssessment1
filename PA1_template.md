@@ -46,7 +46,13 @@ The dataset is stored in a comma-separated-value (CSV) file and there
 are a total of 17,568 observations in this
 dataset.
 
+## configure knitr
+Explicitly tell knitr to write figures to 'figure/'.
 
+```r
+library(knitr)
+opts_chunk$set(fig.path='figure/')
+```
 
 ## Loading and preprocessing the data
 ### Getting the file
@@ -66,6 +72,10 @@ if (!file.exists(file)){
   dateDownloaded <- date()
   dateDownloaded
 }
+```
+
+```
+## [1] "Sat Jan 17 12:42:15 2015"
 ```
 ### import the data
 
@@ -112,33 +122,25 @@ str(total_steps)
 hist(
   total_steps$steps,
   xlab='Steps per day',
-  main='Histogram of Steps per day')
+  main='Histogram of the total number of steps taken each day')
 ```
 
-![](./PA1_template_files/figure-html/unnamed-chunk-5-1.png) 
+![](figure/unnamed-chunk-5-1.png) 
 
 2. Calculate and report the **mean** and **median** total number of steps taken per day
 
-The mean number of steps per day
 
 ```r
 mean_steps <- mean(total_steps$steps)
-mean_steps
 ```
+The mean number of steps per day is **10766.19**
 
-```
-## [1] 10766.19
-```
-The median number of steps per day
 
 ```r
 median_steps <- median(total_steps$step)
-median_steps
 ```
+The median number of steps per day is **10765**
 
-```
-## [1] 10765
-```
 
 ## What is the average daily activity pattern?
 
@@ -147,22 +149,24 @@ median_steps
 
 ```r
 stepsPerInterval <- aggregate(steps ~ interval, data, FUN = mean, na.rm = TRUE) 
-plot(stepsPerInterval, type = "l", col = "red")
+plot(
+  stepsPerInterval, 
+  type = "l", 
+  col = "red",
+  main='Average number of steps taken (averaged across all days)')
 ```
 
-![](./PA1_template_files/figure-html/unnamed-chunk-8-1.png) 
+![](figure/unnamed-chunk-8-1.png) 
 
 2. Which 5-minute interval, on average across all the days in the dataset, contains the maximum number of steps?
 
 
 ```r
 maxStepInterval <- stepsPerInterval[which.max(stepsPerInterval$steps), ]$interval
-maxStepInterval
 ```
-
-```
-## [1] 835
-```
+The interval **835** contains the maximum average number of steps
+(approximately): 
+206 
 
 ## Imputing missing values
 
@@ -228,10 +232,10 @@ imp_total_steps <- aggregate( steps ~ date, data=imp_data, sum)
 hist(
   imp_total_steps$steps,
   xlab='Steps per day (Imput values)',
-  main='Histogram of Steps per day')
+  main='Histogram of Steps per day (after missing values were imputed)')
 ```
 
-![](./PA1_template_files/figure-html/unnamed-chunk-13-1.png) 
+![](figure/unnamed-chunk-13-1.png) 
 
 The mean number of steps per day
 
@@ -276,4 +280,63 @@ Most of the NA appear to be in intervals where fewer steps were taken.  So more 
 
 1. Create a new factor variable in the dataset with two levels – “weekday” and “weekend” indicating whether a given date is a weekday or weekend day.
 
+
+```r
+imp_data$day_of_week <- as.factor(weekdays(imp_data$date))
+imp_data$type_of_day <- 
+  ifelse(imp_data$day_of_week %in% c('Saturday','Sunday'),'weekend','weekday')
+```
+
 2. Make a panel plot containing a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis). See the README file in the GitHub repository to see an example of what this plot should look like using simulated data.
+
+First create two subset of the data, one for weekdays and one for weekends
+
+```r
+data_weekday <- subset(
+  imp_data,
+  imp_data$type_of_day == 'weekday', 
+  select=c('steps', 'interval'))
+data_weekend <- subset(
+  imp_data,
+  imp_data$type_of_day == 'weekend', 
+  select=c('steps', 'interval'))
+```
+
+Next, compute the average step per interval for each subset
+
+```r
+dframe_weekday <- data.frame(
+  interval = unique(data_weekday$interval),
+  average  = tapply(data_weekday$steps,data_weekday$interval,mean)
+  )
+dframe_weekday$day <- 'weekday'
+dframe_weekend <- data.frame(
+  interval = unique(data_weekend$interval),
+  average  = tapply(data_weekend$steps,data_weekend$interval,mean)
+  )
+dframe_weekend$day <- 'weekend'
+```
+
+Combine back into one data frame for plotting
+
+```r
+dframe_combined <- rbind(dframe_weekday,dframe_weekend)
+```
+
+Use the lattice library to stack the xyplot atop one another like the example from README.
+
+```r
+library(lattice)
+xyplot(
+  average ~ interval | day, 
+  data = dframe_combined,
+  layout=c(1,2),
+  type='l',
+  ylab='Number of steps',
+  main='Average number of steps take per 5-minute interval')
+```
+
+![](figure/unnamed-chunk-20-1.png) 
+
+The weekend activity seems more spread out through out the day.  The weekday activity seems more concentrated on certain periods of the day.
+
