@@ -1,0 +1,14 @@
+[x] PA1_template.Rmd
+[x] PA1_template.md
+[x] PA1_template.html
+[x] figure/ directory
+
+[x] histogram of total number of steps taken each day
+[x] both the mean and median number of steps taken
+[x] time series plot of the average number of steps taken vs interval
+[x] does the report give the 5-minute interval contains maximum # steps?
+[x] describe and show strategy of imputing missing data?
+[x] histogram after missind data imputted
+[x] panel plot comparing steps taken per interval across weekend / weekday
+[x] show all R code need to reproduce results
+
